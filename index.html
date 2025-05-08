@@ -2,100 +2,17 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Vérification de certificat – DriveX</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #ff6a00, #d40000);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-
-    .logo {
-      position: absolute;
-      top: 20px;
-      max-width: 180px;
-    }
-
-    .container {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 40px;
-      border-radius: 16px;
-      backdrop-filter: blur(8px);
-      text-align: center;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-      max-width: 400px;
-      width: 90%;
-    }
-
-    h1 {
-      font-size: 22px;
-      margin-bottom: 25px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin-bottom: 20px;
-      border: none;
-      border-radius: 8px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: white;
-      color: #d40000;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background-color: #ffd5d5;
-    }
-
-    @media (max-width: 600px) {
-      .logo {
-        max-width: 120px;
-        top: 10px;
-      }
-
-      .container {
-        margin-top: 100px;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vérification - DriveX Official</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <img src="drivex-logo.png" alt="DriveX Logo" class="logo">
-
   <div class="container">
-    <h1>Vérifier l'authenticité d'un certificat DriveX</h1>
-    <input type="text" id="code" placeholder="Numéro de certificat">
-    <button onclick="verifier()">Vérifier</button>
+    <div class="box">
+      <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
+      <h1>Vérifier l’authenticité d’un certificat DriveX Official</h1>
+      <input type="text" placeholder="Entrez le numéro du certificat" class="input-field">
+    </div>
   </div>
-
-  <script>
-    async function verifier() {
-      const code = document.getElementById('code').value.trim();
-      const res = await fetch('certificats.json');
-      const data = await res.json();
-      const certif = data.find(c => c.id === code);
-      if (certif) {
-        window.location.href = `certificat.html?id=${code}`;
-      } else {
-        window.location.href = 'invalide.html';
-      }
-    }
-  </script>
 </body>
 </html>
