@@ -7,7 +7,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: orange;
+      background: linear-gradient(to right, #F97316, #EB5210, #D93717, #C2251B, #B91C1C);
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -34,6 +34,7 @@
       color: #333;
       font-weight: bold;
       margin-bottom: 20px;
+      white-space: pre-wrap; /* Permet d'ajouter un saut de ligne si nécessaire */
     }
 
     .input-field {
@@ -79,7 +80,7 @@
 <body>
   <div class="box" id="verificationBox">
     <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/504851985/bbff4301-cc7e-4683-ab47-3c7e82eaa301.png" alt="Logo DriveX Official" class="logo">
-    <h1>Vérifiez l’authenticité d’un certificat DriveX Official</h1>
+    <h1>Vérifiez l’authenticité d’un certificat<br>DriveX Official</h1>
     <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
     <button class="button" onclick="verifyCertificate()">Valider</button>
     <div class="error" id="errorMessage"></div>
