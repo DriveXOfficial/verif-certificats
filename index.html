@@ -62,14 +62,40 @@
     .button:hover {
       background-color: #e65c00;
     }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 15px;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="box">
     <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
     <h1>Vérifiez l’authenticité d’un certificat DriveX Official</h1>
-    <input type="text" placeholder="Entrez le numéro du certificat" class="input-field">
-    <button class="button">Vérifier</button>
+    <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
+    <button class="button" onclick="verifyCertificate()">Valider</button>
+    <div class="error" id="errorMessage">La clé doit contenir exactement 8 chiffres.</div>
   </div>
+
+  <script>
+    function verifyCertificate() {
+      const certNumber = document.getElementById('certNumber').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Vérifier si la clé est composée de 8 chiffres
+      const regex = /^\d{8}$/;
+
+      if (!certNumber.match(regex)) {
+        errorMessage.style.display = 'block';  // Affiche l'erreur si la clé n'est pas valide
+      } else {
+        errorMessage.style.display = 'none';  // Cache l'erreur si la clé est valide
+        alert('Vérification en cours pour le certificat : ' + certNumber);
+        // Ici, tu peux ajouter la logique pour vérifier le certificat via API ou base de données
+      }
+    }
+  </script>
 </body>
 </html>
