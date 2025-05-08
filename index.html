@@ -69,10 +69,11 @@
     }
 
     .result {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       color: green;
       margin-top: 20px;
+      text-align: left;
     }
   </style>
 </head>
@@ -86,12 +87,27 @@
   </div>
 
   <script>
-    // Liste des clés valides (tu peux en ajouter autant que tu veux ici)
-    const validCertificates = [
-      "12345678",
-      "87654321",
-      "11223344"
-    ];
+    // Clés avec nom, prénom, événement et résultat
+    const certificates = {
+      "12345678": {
+        nom: "Dupont",
+        prenom: "Alex",
+        evenement: "24H DriveX 2024",
+        resultat: "1ère place"
+      },
+      "87654321": {
+        nom: "Martin",
+        prenom: "Sophie",
+        evenement: "DriveX Sprint Cup",
+        resultat: "3ème place"
+      },
+      "11223344": {
+        nom: "Leroy",
+        prenom: "Nathan",
+        evenement: "Endurance DriveX",
+        resultat: "2ème place"
+      }
+    };
 
     function verifyCertificate() {
       const certNumber = document.getElementById('certNumber').value.trim();
@@ -106,15 +122,23 @@
 
       errorMessage.style.display = 'none';
 
-      if (validCertificates.includes(certNumber)) {
+      const cert = certificates[certNumber];
+
+      if (cert) {
         box.innerHTML = `
           <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
-          <div class="result">Ce certificat est <span style="color: green;">authentique</span> !</div>
+          <h2 style="color: green;">Certificat Authentique</h2>
+          <div class="result">
+            <p><strong>Nom :</strong> ${cert.prenom} ${cert.nom}</p>
+            <p><strong>Événement :</strong> ${cert.evenement}</p>
+            <p><strong>Résultat :</strong> ${cert.resultat}</p>
+          </div>
         `;
       } else {
         box.innerHTML = `
           <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
-          <div class="result" style="color: red;">Ce certificat n'est pas reconnu.</div>
+          <h2 style="color: red;">Certificat non reconnu</h2>
+          <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
         `;
       }
     }
