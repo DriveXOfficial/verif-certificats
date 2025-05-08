@@ -34,7 +34,7 @@
       color: #333;
       font-weight: bold;
       margin-bottom: 20px;
-      white-space: pre-wrap; /* Permet d'ajouter un saut de ligne si nécessaire */
+      white-space: pre-wrap;
     }
 
     .input-field {
@@ -69,14 +69,6 @@
       margin-top: 15px;
     }
 
-    .result {
-      font-size: 16px;
-      font-weight: bold;
-      margin-top: 20px;
-      color: green;
-      text-align: left;
-    }
-
     .result-box {
       background-color: #f1f1f1;
       padding: 20px;
@@ -86,37 +78,35 @@
       text-align: left;
     }
 
-    .result h2 {
+    .result-box h2 {
       color: #4CAF50;
       margin-bottom: 10px;
       font-size: 22px;
     }
 
-    .result p {
+    .result-box p {
       margin: 8px 0;
       font-size: 16px;
     }
 
-    .result p strong {
+    .result-box p strong {
       color: #333;
-    }
-
-    .icon {
-      font-size: 40px;
-      margin-right: 10px;
     }
 
     .name {
       display: flex;
       align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: bold;
       margin-bottom: 10px;
     }
 
-    .name span {
-      font-size: 20px;
-      font-weight: bold;
+    .icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
     }
-
   </style>
 </head>
 <body>
@@ -159,31 +149,28 @@
       errorMessage.innerText = '';
       resultBox.innerHTML = '';
 
-      // Vérification lettres
       if (/[a-zA-Z]/.test(certNumber)) {
         errorMessage.innerText = "La clé ne contient pas de lettre.";
         return;
       }
 
-      // Vérification caractères spéciaux
       if (/[^0-9]/.test(certNumber)) {
         errorMessage.innerText = "La clé ne contient pas de caractère spécial.";
         return;
       }
 
-      // Vérification longueur exacte
       if (certNumber.length !== 8) {
         errorMessage.innerText = "La clé doit contenir exactement 8 chiffres.";
         return;
       }
 
-      // Affichage si la clé est correcte
       const cert = certificates[certNumber];
       if (cert) {
         resultBox.innerHTML = `
           <div class="result-box">
             <div class="name">
-              <span><img src="https://img.icons8.com/ios/452/checkmark.png" alt="Certificat authentique" class="icon"> Certificat authentique</span>
+              <img src="https://img.icons8.com/ios/452/checkmark.png" alt="Certificat authentique" class="icon">
+              <span>Certificat authentique</span>
             </div>
             <h2>${cert.prenom} ${cert.nom}</h2>
             <p><strong>Événement :</strong> ${cert.evenement}</p>
@@ -194,7 +181,8 @@
         resultBox.innerHTML = `
           <div class="result-box">
             <div class="name">
-              <span><img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Certificat non valide" class="icon"> Certificat non reconnu</span>
+              <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Certificat non valide" class="icon">
+              <span>Certificat non reconnu</span>
             </div>
             <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
           </div>
