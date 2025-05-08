@@ -65,7 +65,6 @@
       color: red;
       font-size: 14px;
       margin-top: 15px;
-      display: none;
     }
 
     .result {
@@ -83,12 +82,11 @@
     <h1>Vérifiez l’authenticité d’un certificat DriveX Official</h1>
     <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
     <button class="button" onclick="verifyCertificate()">Valider</button>
-    <div class="error" id="errorMessage">La clé doit contenir exactement 8 chiffres.</div>
+    <div class="error" id="errorMessage"></div>
     <div id="resultBox"></div>
   </div>
 
   <script>
-    // Clés avec nom, prénom, événement et résultat
     const certificates = {
       "12345678": {
         nom: "Dupont",
@@ -114,19 +112,30 @@
       const certNumber = document.getElementById('certNumber').value.trim();
       const errorMessage = document.getElementById('errorMessage');
       const resultBox = document.getElementById('resultBox');
-      const regex = /^\d{8}$/;
 
-      // Reset affichage
-      errorMessage.style.display = 'none';
+      errorMessage.innerText = '';
       resultBox.innerHTML = '';
 
-      if (!regex.test(certNumber)) {
-        errorMessage.style.display = 'block';
+      // Vérification lettres
+      if (/[a-zA-Z]/.test(certNumber)) {
+        errorMessage.innerText = "La clé ne contient pas de lettre.";
         return;
       }
 
-      const cert = certificates[certNumber];
+      // Vérification caractères spéciaux
+      if (/[^0-9]/.test(certNumber)) {
+        errorMessage.innerText = "La clé ne contient pas de caractère spécial.";
+        return;
+      }
 
+      // Vérification longueur exacte
+      if (certNumber.length !== 8) {
+        errorMessage.innerText = "La clé doit contenir exactement 8 chiffres.";
+        return;
+      }
+
+      // Affichage si la clé est correcte
+      const cert = certificates[certNumber];
       if (cert) {
         resultBox.innerHTML = `
           <h2 style="color: green;">Certificat authentique</h2>
