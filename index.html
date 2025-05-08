@@ -84,6 +84,7 @@
     <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
     <button class="button" onclick="verifyCertificate()">Valider</button>
     <div class="error" id="errorMessage">La clé doit contenir exactement 8 chiffres.</div>
+    <div id="resultBox"></div>
   </div>
 
   <script>
@@ -112,22 +113,23 @@
     function verifyCertificate() {
       const certNumber = document.getElementById('certNumber').value.trim();
       const errorMessage = document.getElementById('errorMessage');
-      const box = document.getElementById('verificationBox');
+      const resultBox = document.getElementById('resultBox');
       const regex = /^\d{8}$/;
+
+      // Reset affichage
+      errorMessage.style.display = 'none';
+      resultBox.innerHTML = '';
 
       if (!regex.test(certNumber)) {
         errorMessage.style.display = 'block';
         return;
       }
 
-      errorMessage.style.display = 'none';
-
       const cert = certificates[certNumber];
 
       if (cert) {
-        box.innerHTML = `
-          <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
-          <h2 style="color: green;">Certificat Authentique</h2>
+        resultBox.innerHTML = `
+          <h2 style="color: green;">Certificat authentique</h2>
           <div class="result">
             <p><strong>Nom :</strong> ${cert.prenom} ${cert.nom}</p>
             <p><strong>Événement :</strong> ${cert.evenement}</p>
@@ -135,8 +137,7 @@
           </div>
         `;
       } else {
-        box.innerHTML = `
-          <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
+        resultBox.innerHTML = `
           <h2 style="color: red;">Certificat non reconnu</h2>
           <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
         `;
