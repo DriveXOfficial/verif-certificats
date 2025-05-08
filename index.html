@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Vérification de certificat</title>
+</head>
+<body>
+  <h2>Vérifie ton certificat</h2>
+  <input type="text" id="code" placeholder="Numéro de certificat">
+  <button onclick="verifier()">Vérifier</button>
+
+  <script>
+    async function verifier() {
+      const code = document.getElementById('code').value.trim();
+      const res = await fetch('certificats.json');
+      const data = await res.json();
+      const certif = data.find(c => c.id === code);
+      if (certif) {
+        window.location.href = `certificat.html?id=${code}`;
+      } else {
+        window.location.href = 'invalide.html';
+      }
+    }
+  </script>
+</body>
+</html>
