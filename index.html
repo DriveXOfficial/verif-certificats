@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vérification - DriveX Official</title>
   <style>
     body {
@@ -43,7 +42,6 @@
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      font-family: Arial, sans-serif;
       font-weight: bold;
       margin-bottom: 15px;
     }
@@ -70,54 +68,54 @@
       display: none;
     }
 
-    .success {
+    .result {
+      font-size: 18px;
+      font-weight: bold;
       color: green;
-      font-size: 14px;
-      margin-top: 15px;
-      display: none;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="box">
+  <div class="box" id="verificationBox">
     <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
     <h1>Vérifiez l’authenticité d’un certificat DriveX Official</h1>
     <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
     <button class="button" onclick="verifyCertificate()">Valider</button>
     <div class="error" id="errorMessage">La clé doit contenir exactement 8 chiffres.</div>
-    <div class="success" id="successMessage">Le certificat est valide !</div>
   </div>
 
   <script>
-    // Liste des certificats valides
+    // Liste des clés valides (tu peux en ajouter autant que tu veux ici)
     const validCertificates = [
-      "12345678", // Certificat 1
-      "87654321", // Certificat 2
-      "23456789", // Certificat 3
-      "98765432"  // Certificat 4
+      "12345678",
+      "87654321",
+      "11223344"
     ];
 
     function verifyCertificate() {
-      const certNumber = document.getElementById('certNumber').value;
+      const certNumber = document.getElementById('certNumber').value.trim();
       const errorMessage = document.getElementById('errorMessage');
-      const successMessage = document.getElementById('successMessage');
-      
-      // Vérifier si la clé est composée de 8 chiffres
+      const box = document.getElementById('verificationBox');
       const regex = /^\d{8}$/;
 
-      if (!certNumber.match(regex)) {
-        errorMessage.style.display = 'block';  // Affiche l'erreur si la clé n'est pas valide
-        successMessage.style.display = 'none'; // Cache le message de succès si la clé est invalide
+      if (!regex.test(certNumber)) {
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      errorMessage.style.display = 'none';
+
+      if (validCertificates.includes(certNumber)) {
+        box.innerHTML = `
+          <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
+          <div class="result">Ce certificat est <span style="color: green;">authentique</span> !</div>
+        `;
       } else {
-        errorMessage.style.display = 'none';  // Cache l'erreur si la clé est valide
-        
-        // Vérifier si le numéro de certificat existe dans la liste
-        if (validCertificates.includes(certNumber)) {
-          successMessage.style.display = 'block'; // Affiche le message de succès
-        } else {
-          successMessage.style.display = 'none';  // Cache le message de succès si le certificat est invalide
-          alert('Ce certificat n\'est pas valide.');
-        }
+        box.innerHTML = `
+          <img src="logo-drivex.png" alt="Logo DriveX Official" class="logo">
+          <div class="result" style="color: red;">Ce certificat n'est pas reconnu.</div>
+        `;
       }
     }
   </script>
