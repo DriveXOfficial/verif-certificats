@@ -69,6 +69,13 @@
       margin-top: 15px;
       display: none;
     }
+
+    .success {
+      color: green;
+      font-size: 14px;
+      margin-top: 15px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -78,22 +85,39 @@
     <input type="text" placeholder="Entrez le numéro du certificat" class="input-field" id="certNumber">
     <button class="button" onclick="verifyCertificate()">Valider</button>
     <div class="error" id="errorMessage">La clé doit contenir exactement 8 chiffres.</div>
+    <div class="success" id="successMessage">Le certificat est valide !</div>
   </div>
 
   <script>
+    // Liste des certificats valides
+    const validCertificates = [
+      "12345678", // Certificat 1
+      "87654321", // Certificat 2
+      "23456789", // Certificat 3
+      "98765432"  // Certificat 4
+    ];
+
     function verifyCertificate() {
       const certNumber = document.getElementById('certNumber').value;
       const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
       
       // Vérifier si la clé est composée de 8 chiffres
       const regex = /^\d{8}$/;
 
       if (!certNumber.match(regex)) {
         errorMessage.style.display = 'block';  // Affiche l'erreur si la clé n'est pas valide
+        successMessage.style.display = 'none'; // Cache le message de succès si la clé est invalide
       } else {
         errorMessage.style.display = 'none';  // Cache l'erreur si la clé est valide
-        alert('Vérification en cours pour le certificat : ' + certNumber);
-        // Ici, tu peux ajouter la logique pour vérifier le certificat via API ou base de données
+        
+        // Vérifier si le numéro de certificat existe dans la liste
+        if (validCertificates.includes(certNumber)) {
+          successMessage.style.display = 'block'; // Affiche le message de succès
+        } else {
+          successMessage.style.display = 'none';  // Cache le message de succès si le certificat est invalide
+          alert('Ce certificat n\'est pas valide.');
+        }
       }
     }
   </script>
