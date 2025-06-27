@@ -1,350 +1,279 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<title>Vérification - DriveX Official</title>
-<style>
-  body {
-    margin: 0; padding: 0;
-    font-family: Arial, sans-serif;
-    background: #013062;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  <meta charset="UTF-8">
+  <title>Vérification - DriveX Official</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #013062;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  .container {
-    background: white;
-    border-radius: 10px;
-    padding: 30px 20px 40px 20px;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    box-sizing: border-box;
-    position: relative;
-  }
+    .box {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 
-  h1 {
-    margin: 0 0 20px 0;
-    color: #013062;
-    font-weight: bold;
-    text-align: center;
-    user-select: none;
-  }
+    .logo-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 20px;
+      background-color: #013062;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  input[type=text] {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    margin-bottom: 15px;
-    font-weight: bold;
-    box-sizing: border-box;
-  }
+    .logo-circle img {
+      width: 115%;
+      height: 115%;
+      object-fit: cover;
+      transform: scale(1.15);
+    }
 
-  button {
-    background-color: #013062;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
-  }
+    h1 {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+    }
 
-  button:hover {
-    background-color: #001e42;
-  }
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
 
-  .error {
-    color: red;
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: center;
-  }
+    .button {
+      background: #013062;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color .3s;
+    }
 
-  /* Résultat */
-  .result {
-    margin-top: 30px;
-    min-height: 180px;
-    position: relative;
-  }
+    .button:hover {
+      background: #001e42;
+    }
 
-  /* Certificat classique style */
-  .certificat-box {
-    background: #f7f7f7;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    color: #013062;
-    font-size: 16px;
-  }
-  .certificat-box h2 {
-    margin-top: 0;
-    font-size: 20px;
-  }
-  .certificat-box p {
-    margin: 6px 0;
-  }
-  .certificat-name {
-    font-weight: bold;
-    font-size: 18px;
-  }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 15px;
+    }
 
-  /* Carte licence */
-  .licence-card {
-    position: relative;
-    background: white;
-    border: 2px solid #013062;
-    border-radius: 20px;
-    width: 505.5px; /* moitié taille d'origine */
-    max-width: 100%;
-    height: 319px; /* moitié taille d'origine */
-    margin: 0 auto; /* centrage horizontal */
-    color: #013062;
-    font-family: sans-serif;
-    box-sizing: border-box;
-    user-select: none;
-  }
-  /* Titre LICENCE FID */
-  .licence-card .title {
-    position: absolute;
-    top: 18px;
-    left: 15px;
-    font-size: 27.5px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+    .result-box {
+      margin-top: 30px;
+      text-align: left;
+    }
 
-  /* Logo FID */
-  .licence-card .logo-fid {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    object-fit: contain;
-  }
+    /* Certificat */
+    .cert-box {
+      background: #f1f1f1;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-  /* Cadre photo */
-  .licence-card .photo-frame {
-    position: absolute;
-    top: 72px;
-    left: 50px;
-    width: 105px;
-    height: 130px;
-    border-radius: 8px;
-    border: 1px solid #013062;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png');
-    background-size: cover;
-    background-position: center;
-  }
+    .cert-box h2 {
+      color: #4CAF50;
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
 
-  /* Texte dynamique */
-  .licence-card .prenom-nom {
-    position: absolute;
-    top: 85px;
-    left: 207px;
-    font-size: 11px;
-    font-weight: bold;
-  }
-  .licence-card .num-licence {
-    position: absolute;
-    top: 108px;
-    left: 207px;
-    font-size: 10px;
-  }
-  .licence-card .date-emission {
-    position: absolute;
-    top: 129px;
-    left: 207px;
-    font-size: 10px;
-  }
-  .licence-card .date-validite {
-    position: absolute;
-    top: 149px;
-    left: 207px;
-    font-size: 10px;
-  }
+    .cert-box p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
 
-  /* Catégories */
-  .licence-card .categories-title {
-    position: absolute;
-    top: 200px;
-    left: 50px;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+    .cert-box .name {
+      font-weight: bold;
+      font-size: 18px;
+    }
 
-  .licence-card .checkbox {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #013062;
-    font-size: 13px;
-    text-align: center;
-    line-height: 20px;
-    user-select: none;
-  }
-  .licence-card .label-cat {
-    position: absolute;
-    font-size: 10px;
-    user-select: none;
-  }
+    /* Licence FID */
+    .licence-card {
+      position: relative;
+      background: white;
+      border: 2px solid #013062;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 15px;
+      box-sizing: border-box;
+    }
 
-  /* Positions cases + labels */
-  .licence-card .cb-f1 { top: 230px; left: 50px; }
-  .licence-card .lbl-f1 { top: 230px; left: 80px; }
-  .licence-card .cb-f2 { top: 260px; left: 50px; }
-  .licence-card .lbl-f2 { top: 260px; left: 80px; }
-  .licence-card .cb-endurance { top: 230px; left: 190px; }
-  .licence-card .lbl-endurance { top: 230px; left: 220px; }
-  .licence-card .cb-commissaire { top: 230px; left: 295px; }
-  .licence-card .lbl-commissaire { top: 230px; left: 325px; }
+    .licence-title {
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #013062;
+      margin-bottom: 10px;
+    }
 
-</style>
+    .licence-logo {
+      width: 50px;
+      height: 50px;
+      float: right;
+      border-radius: 50%;
+    }
+
+    .lic-photo {
+      width: 90px;
+      height: 110px;
+      border: 1px solid #013062;
+      border-radius: 8px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png') center/cover;
+      float: left;
+    }
+
+    .lic-text {
+      margin-left: 110px;
+      padding-top: 5px;
+    }
+
+    .lic-text div {
+      font-size: 12px;
+      margin: 4px 0;
+      color: #013062;
+    }
+
+    .lic-categories {
+      margin-top: 10px;
+      clear: both;
+    }
+
+    .lic-cat {
+      display: inline-block;
+      margin-right: 15px;
+      font-size: 12px;
+      color: #013062;
+    }
+
+    .lic-cat span {
+      border: 1px solid #013062;
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      margin-right: 4px;
+      font-size: 10px;
+    }
+  </style>
 </head>
 <body>
+  <div class="box">
+    <div class="logo-circle">
+      <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/518041438/3de061a3-59b5-4683-b9c9-f12e36e06970.png" alt="Logo DriveX">
+    </div>
+    <h1>Vérifiez certificat ou licence FID</h1>
+    <input id="inputCode" class="input-field" placeholder="Entrez 8 chiffres ou AAA-1234-BBB">
+    <button class="button" onclick="verifier()">Valider</button>
+    <div id="error" class="error"></div>
+    <div id="result" class="result-box"></div>
+  </div>
 
-<div class="container">
-  <h1>Vérification Certificat & Licence FID</h1>
-  <input type="text" id="inputCode" placeholder="Entrez un numéro de certificat ou licence FID" />
-  <button id="btnVerify">Vérifier</button>
-  <div id="error" class="error"></div>
-  <div id="result" class="result"></div>
-</div>
-
-<script>
-  // Données exemples séparées
-  const certificats = {
-    "12345678": {
-      nom: "Maury",
-      prenom: "Jocelyn",
-      evenement: "F1 DriveX - S1",
-      resultat: "1ère place",
-      structure: "DriveX Official"
-    },
-    "28647951": {
-      nom: "Maury",
-      prenom: "Jocelyn",
-      evenement: "F2 DriveX - S2",
-      resultat: "3ème place",
-      structure: "DriveX Official"
-    }
-  };
-
-  const licences = {
-    "BID-2048-XLM": {
-      nom: "Caliez",
-      prenom: "Quentin",
-      dateEmission: "27/06/2025",
-      dateValidite: "27/06/2026",
-      f1: true,
-      f2: true,
-      endurance: false,
-      commissaire: false
-    },
-    "ABC-1234-XYZ": {
-      nom: "Dupont",
-      prenom: "Marie",
-      dateEmission: "10/01/2025",
-      dateValidite: "10/01/2027",
-      f1: false,
-      f2: true,
-      endurance: true,
-      commissaire: true
-    }
-  };
-
-  // Validation des formats
-  const regexCertificat = /^\d{8}$/;
-  const regexLicence = /^[A-Z]{3}-\d{4}-[A-Z]{3}$/i;
-
-  // Elements DOM
-  const inputCode = document.getElementById("inputCode");
-  const btnVerify = document.getElementById("btnVerify");
-  const errorDiv = document.getElementById("error");
-  const resultDiv = document.getElementById("result");
-
-  btnVerify.addEventListener("click", () => {
-    errorDiv.textContent = "";
-    resultDiv.innerHTML = "";
-    const code = inputCode.value.trim();
-
-    if (!code) {
-      errorDiv.textContent = "Veuillez entrer un numéro de certificat ou licence FID.";
-      return;
-    }
-
-    if (regexCertificat.test(code)) {
-      // Certificat
-      if (certificats[code]) {
-        const c = certificats[code];
-        resultDiv.innerHTML = `
-          <div class="certificat-box">
-            <h2>Certificat n°${code}</h2>
-            <p><span class="certificat-name">${c.prenom} ${c.nom}</span></p>
-            <p>Événement : <strong>${c.evenement}</strong></p>
-            <p>Résultat : <strong>${c.resultat}</strong></p>
-            <p>Structure : <strong>${c.structure}</strong></p>
-          </div>
-        `;
-      } else {
-        errorDiv.textContent = "Certificat non trouvé.";
+  <script>
+    const certifs = {
+      "12345678": {
+        nom: "Maury",
+        prenom: "Jocelyn",
+        evenement: "F1 DriveX - S1",
+        resultat: "1ère place",
+        structure: "DriveX Official"
       }
-    } else if (regexLicence.test(code.toUpperCase())) {
-      // Licence
-      const licKey = code.toUpperCase();
-      if (licences[licKey]) {
-        const l = licences[licKey];
-        resultDiv.innerHTML = `
-          <div class="licence-card" role="region" aria-label="Carte licence FID">
-            <div class="title">Licence FID</div>
-            <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID" class="logo-fid" />
-            <div class="photo-frame" aria-label="Photo du licencié"></div>
+    };
 
-            <div class="prenom-nom" title="Nom et prénom">${l.prenom} ${l.nom}</div>
-            <div class="num-licence" title="Numéro de licence">${licKey}</div>
-            <div class="date-emission" title="Date d’émission">ÉMIS LE : ${l.dateEmission}</div>
-            <div class="date-validite" title="Date de validité">VALIDE JUSQU’À : ${l.dateValidite}</div>
-
-            <div class="categories-title">CATEGORIES</div>
-
-            <div class="checkbox cb-f1" title="F1">${l.f1 ? "✅" : ""}</div>
-            <div class="label-cat lbl-f1">F1</div>
-
-            <div class="checkbox cb-f2" title="F2">${l.f2 ? "✅" : ""}</div>
-            <div class="label-cat lbl-f2">F2</div>
-
-            <div class="checkbox cb-endurance" title="ENDURANCE">${l.endurance ? "✅" : ""}</div>
-            <div class="label-cat lbl-endurance">ENDURANCE</div>
-
-            <div class="checkbox cb-commissaire" title="COMMISSAIRE">${l.commissaire ? "✅" : ""}</div>
-            <div class="label-cat lbl-commissaire">COMMISSAIRE</div>
-          </div>
-        `;
-      } else {
-        errorDiv.textContent = "Licence FID non trouvée.";
+    const licences = {
+      "BID-2048-XLM": {
+        nom: "Caliez",
+        prenom: "Quentin",
+        dateEmission: "27/06/2025",
+        dateValidite: "27/06/2026",
+        f1: true,
+        f2: true,
+        endurance: false,
+        commissaire: false
       }
-    } else {
-      errorDiv.textContent = "Format invalide. Entrez un numéro de certificat (8 chiffres) ou une licence FID (AAA-1234-BBB).";
-    }
-  });
+    };
 
-  // Permet validation avec touche Entrée
-  inputCode.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      btnVerify.click();
-    }
-  });
-</script>
+    function verifier() {
+      const code = document.getElementById("inputCode").value.trim();
+      const error = document.getElementById("error");
+      const res = document.getElementById("result");
+      error.textContent = "";
+      res.innerHTML = "";
 
+      if (/^\d{8}$/.test(code)) {
+        const c = certifs[code];
+        if (c) {
+          res.innerHTML = `
+            <div class="cert-box">
+              <h2>Certificat vérifié ✅</h2>
+              <p class="name">${c.prenom} ${c.nom}</p>
+              <p>Événement : <strong>${c.evenement}</strong></p>
+              <p>Résultat : <strong>${c.resultat}</strong></p>
+              <p>Structure : <strong>${c.structure}</strong></p>
+            </div>`;
+        } else {
+          error.textContent = "Certificat non trouvé.";
+        }
+      } else if (/^[A-Z]{3}-\d{4}-[A-Z]{3}$/i.test(code)) {
+        const key = code.toUpperCase();
+        const l = licences[key];
+        if (l) {
+          res.innerHTML = `
+            <div class="licence-card">
+              <div><span class="licence-title">Licence FID</span>
+              <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" class="licence-logo"></div>
+              <div class="lic-photo"></div>
+              <div class="lic-text">
+                <div>${l.prenom} ${l.nom}</div>
+                <div>${key}</div>
+                <div>ÉMIS LE : ${l.dateEmission}</div>
+                <div>VALIDE JUSQU’À : ${l.dateValidite}</div>
+              </div>
+              <div class="lic-categories">
+                <div class="lic-cat"><span>${l.f1 ? "✅" : ""}</span>F1</div>
+                <div class="lic-cat"><span>${l.f2 ? "✅" : ""}</span>F2</div>
+                <div class="lic-cat"><span>${l.endurance ? "✅" : ""}</span>ENDURANCE</div>
+                <div class="lic-cat"><span>${l.commissaire ? "✅" : ""}</span>COMMISSAIRE</div>
+              </div>
+            </div>`;
+        } else {
+          error.textContent = "Licence FID non trouvée.";
+        }
+      } else {
+        error.textContent = "Format invalide.";
+      }
+    }
+
+    document.getElementById("inputCode").addEventListener("keypress", e => {
+      if (e.key === "Enter") verifier();
+    });
+  </script>
 </body>
 </html>
