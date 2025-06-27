@@ -124,12 +124,12 @@
 
     .licence-photo-frame {
       position: absolute;
-      top: 145px;
-      left: 100px;
-      width: 210px;
-      height: 260px;
-      border-radius: 15px;
-      border: 2px solid #013062;
+      top: 72px;
+      left: 50px;
+      width: 105px;
+      height: 130px;
+      border-radius: 8px;
+      border: 1px solid #013062;
       background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png');
       background-size: cover;
       background-position: center;
@@ -137,145 +137,84 @@
   </style>
 </head>
 <body>
-  <div class="box" id="verificationBox">
+  <div class="box">
     <div class="logo-circle">
-      <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/518041438/3de061a3-59b5-4683-b9c9-f12e36e06970.png" alt="Logo DriveX">
+      <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="FID Logo">
     </div>
-    <h1>Vérifiez l’authenticité d’un certificat<br>ou d’une licence FID</h1>
-    <input type="text" placeholder="Entrez le code du certificat ou licence" class="input-field" id="certNumber">
-    <button class="button" onclick="verifyInput()">Valider</button>
-    <div class="error" id="errorMessage"></div>
-    <div id="resultBox"></div>
+    <h1>Vérifie ton certificat ou ta licence FID</h1>
+    <input id="codeInput" class="input-field" placeholder="Entrez le code... (ex: 12345678 ou AAA-1234-BBB)">
+    <button class="button" onclick="verifierCode()">Vérifier</button>
+    <div id="resultat" class="result-box"></div>
   </div>
 
   <script>
-    const certificates = {
-      "28647951": {
-        nom: "Maury",
-        prenom: "Jocelyn",
+    const baseDonnees = {
+      "12345678": {
+        type: "certificat",
+        nom: "Caliez",
+        prenom: "Quentin",
         evenement: "F1 DriveX - S1",
         resultat: "1ère place",
         structure: "DriveX Official"
       },
-      "20495373": {
-        nom: "Deverre",
-        prenom: "Rowan",
-        evenement: "F1 DriveX - S1",
-        resultat: "3ème place",
-        structure: "DriveX Official"
-      },
-      "19354861": {
-        nom: "Castilla",
-        prenom: "Melvin",
-        evenement: "F1 DriveX - S1",
-        resultat: "2ème place",
-        structure: "DriveX Official"
-      },
-      "99234110": {
-        nom: "Durand",
-        prenom: "Hugo",
-        evenement: "24H Le Mans",
-        resultat: "5ème place",
-        structure: "DriveX Official"
-      }
-    };
-
-    const licencesFID = {
-      "BID-2048-XLM": {
-        nom: "Caliez",
-        prenom: "Quentin",
+      "ABC-2048-XYZ": {
+        type: "licence",
+        nom: "Jocelyn",
+        prenom: "Maury",
         dateEmission: "27/06/2025",
         dateValidite: "27/06/2026",
         f1: true,
         f2: true,
         endurance: false,
-        commissaire: false,
-        raison: ""
-      },
-      "FID-0000-XYZ": {
-        nom: "Test",
-        prenom: "Blacklisted",
-        dateEmission: "01/01/2024",
-        dateValidite: "01/01/2025",
-        f1: true,
-        f2: false,
-        endurance: false,
-        commissaire: false,
-        raison: "Comportement antisportif lors de l’événement DriveX Endurance."
+        commissaire: false
       }
     };
 
-    function verifyInput() {
-      const value = document.getElementById("certNumber").value.trim();
-      const errorBox = document.getElementById("errorMessage");
-      const resultBox = document.getElementById("resultBox");
-      errorBox.textContent = "";
+    function verifierCode() {
+      const code = document.getElementById("codeInput").value.trim();
+      const resultBox = document.getElementById("resultat");
       resultBox.innerHTML = "";
 
-      if (/^\d{8}$/.test(value)) {
-        const cert = certificates[value];
-        if (!cert) {
-          resultBox.innerHTML = `<div class="result-box">
-            <div class="name">
-              <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Certificat non valide" class="icon">
-              <span>Certificat non reconnu</span>
-            </div>
-            <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
-          </div>`;
-        } else {
-          resultBox.innerHTML = `<div class="result-box">
-            <div class="name">
-              <img src="https://img.icons8.com/ios/452/checkmark.png" alt="Certificat authentique" class="icon">
-              <span>Certificat authentique</span>
-            </div>
-            <h2>${cert.prenom} ${cert.nom}</h2>
-            <p><strong>Structure :</strong> ${cert.structure}</p>
-            <p><strong>Événement :</strong> ${cert.evenement}</p>
-            <p><strong>Résultat :</strong> ${cert.resultat}</p>
-          </div>`;
+      if (/^[A-Z]{3}-\d{4}-[A-Z]{3}$/i.test(code)) {
+        const licence = baseDonnees[code];
+        if (!licence || licence.type !== "licence") {
+          resultBox.innerHTML = '<p class="error">Licence FID introuvable.</p>';
+          return;
         }
-      } else if (/^[A-Z]{3}-\d{4}-[A-Z]{3}$/.test(value)) {
-        const licence = licencesFID[value];
-        if (!licence) {
-          resultBox.innerHTML = `<div class="result-box">
-            <div class="name">
-              <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Licence non valide" class="icon">
-              <span>Licence FID non reconnue</span>
-            </div>
-            <p>Cette licence ne correspond à aucun enregistrement FID.</p>
-          </div>`;
-        } else if (licence.raison && licence.raison.length > 0) {
-          resultBox.innerHTML = `<div class="result-box">
-            <div class="name">
-              <img src="https://img.icons8.com/ios/452/cancel.png" alt="Blackliste" class="icon">
-              <span>Licence FID invalide (Blackliste)</span>
-            </div>
-            <p><strong>Nom :</strong> ${licence.prenom} ${licence.nom}</p>
-            <p><strong>Licence :</strong> ${value}</p>
-            <p><strong>Raison :</strong> ${licence.raison}</p>
-          </div>`;
-        } else {
-          resultBox.innerHTML = `<div class="result-box" style="position: relative; width: 1000px; height: 600px; background: white; border: 2px solid #013062; border-radius: 20px; color: #013062; font-family: sans-serif;">
-            <h1 style="position: absolute; top: 35px; left: 30px; font-size: 55px; font-weight: bold; text-transform: uppercase;">Licence FID</h1>
-            <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID" style="position: absolute; top: 40px; left: 840px; width: 110px; height: 110px; border-radius: 50%;">
-            <div class="licence-photo-frame"></div>
-            <div style="position: absolute; top: 170px; left: 414px; font-size: 22px; font-weight: bold;">${licence.prenom} ${licence.nom}</div>
-            <div style="position: absolute; top: 215px; left: 414px; font-size: 20px;">${value}</div>
-            <div style="position: absolute; top: 258px; left: 414px; font-size: 20px;">EMIS LE : ${licence.dateEmission}</div>
-            <div style="position: absolute; top: 298px; left: 414px; font-size: 20px;">VALIDE JUSQU’AU : ${licence.dateValidite}</div>
-            <div style="position: absolute; top: 400px; left: 100px; font-size: 20px; font-weight: bold; text-transform: uppercase;">CATEGORIES</div>
-            <div style="position: absolute; top: 460px; left: 100px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.f1 ? '✅' : ''}</div>
-            <div style="position: absolute; top: 460px; left: 160px; font-size: 20px;">F1</div>
-            <div style="position: absolute; top: 520px; left: 100px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.f2 ? '✅' : ''}</div>
-            <div style="position: absolute; top: 520px; left: 160px; font-size: 20px;">F2</div>
-            <div style="position: absolute; top: 460px; left: 380px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.endurance ? '✅' : ''}</div>
-            <div style="position: absolute; top: 460px; left: 430px; font-size: 20px;">ENDURANCE</div>
-            <div style="position: absolute; top: 460px; left: 590px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.commissaire ? '✅' : ''}</div>
-            <div style="position: absolute; top: 460px; left: 640px; font-size: 20px;">COMMISSAIRE</div>
-          </div>`;
+        resultBox.innerHTML = `<div class="result-box" style="position: relative; width: 505.5px; height: 319px; background: white; border: 2px solid #013062; border-radius: 20px; color: #013062; font-family: sans-serif;">
+          <h1 style="position: absolute; top: 18px; left: 15px; font-size: 27.5px; font-weight: bold; text-transform: uppercase;">Licence FID</h1>
+          <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID" style="position: absolute; top: 20px; left: 422px; width: 55px; height: 55px; border-radius: 50%;">
+          <div class="licence-photo-frame"></div>
+          <div style="position: absolute; top: 85px; left: 207px; font-size: 11px; font-weight: bold;">${licence.prenom} ${licence.nom}</div>
+          <div style="position: absolute; top: 108px; left: 207px; font-size: 10px;">${code}</div>
+          <div style="position: absolute; top: 129px; left: 207px; font-size: 10px;">EMIS LE : ${licence.dateEmission}</div>
+          <div style="position: absolute; top: 149px; left: 207px; font-size: 10px;">VALIDE JUSQU’AU : ${licence.dateValidite}</div>
+          <div style="position: absolute; top: 200px; left: 50px; font-size: 10px; font-weight: bold; text-transform: uppercase;">CATEGORIES</div>
+          <div style="position: absolute; top: 230px; left: 50px; width: 20px; height: 20px; border: 1px solid #013062; font-size: 13px; text-align: center;">${licence.f1 ? '✅' : ''}</div>
+          <div style="position: absolute; top: 230px; left: 80px; font-size: 10px;">F1</div>
+          <div style="position: absolute; top: 260px; left: 50px; width: 20px; height: 20px; border: 1px solid #013062; font-size: 13px; text-align: center;">${licence.f2 ? '✅' : ''}</div>
+          <div style="position: absolute; top: 260px; left: 80px; font-size: 10px;">F2</div>
+          <div style="position: absolute; top: 230px; left: 190px; width: 20px; height: 20px; border: 1px solid #013062; font-size: 13px; text-align: center;">${licence.endurance ? '✅' : ''}</div>
+          <div style="position: absolute; top: 230px; left: 220px; font-size: 10px;">ENDURANCE</div>
+          <div style="position: absolute; top: 230px; left: 295px; width: 20px; height: 20px; border: 1px solid #013062; font-size: 13px; text-align: center;">${licence.commissaire ? '✅' : ''}</div>
+          <div style="position: absolute; top: 230px; left: 325px; font-size: 10px;">COMMISSAIRE</div>
+        </div>`;
+      } else if (/^\d{8}$/.test(code)) {
+        const certif = baseDonnees[code];
+        if (!certif || certif.type !== "certificat") {
+          resultBox.innerHTML = '<p class="error">Certificat introuvable.</p>';
+          return;
         }
+        resultBox.innerHTML = `
+          <div class="result-box">
+            <h2>Certificat Vérifié ✅</h2>
+            <p><strong>Nom :</strong> ${certif.prenom} ${certif.nom}</p>
+            <p><strong>Événement :</strong> ${certif.evenement}</p>
+            <p><strong>Résultat :</strong> ${certif.resultat}</p>
+            <p><strong>Structure :</strong> ${certif.structure}</p>
+          </div>`;
       } else {
-        errorBox.textContent = "Format invalide. Entrez soit un numéro à 8 chiffres, soit une licence AAA-1234-BBB.";
+        resultBox.innerHTML = '<p class="error">Format de code invalide.</p>';
       }
     }
   </script>
