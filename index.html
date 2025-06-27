@@ -121,6 +121,19 @@
       height: 20px;
       object-fit: contain;
     }
+
+    .licence-photo-frame {
+      position: absolute;
+      top: 145px;
+      left: 100px;
+      width: 210px;
+      height: 260px;
+      border-radius: 15px;
+      border: 2px solid #013062;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png');
+      background-size: cover;
+      background-position: center;
+    }
   </style>
 </head>
 <body>
@@ -223,7 +236,7 @@
           resultBox.innerHTML = `<div class="result-box" style="position: relative; width: 1000px; height: 600px; background: white; border: 2px solid #013062; border-radius: 20px; color: #013062; font-family: sans-serif;">
             <h1 style="position: absolute; top: 35px; left: 30px; font-size: 55px; font-weight: bold; text-transform: uppercase;">Licence FID</h1>
             <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID" style="position: absolute; top: 40px; left: 840px; width: 110px; height: 110px; border-radius: 50%;">
-            <div style="position: absolute; top: 145px; left: 100px; width: 210px; height: 260px; border-radius: 15px; border: 2px solid #013062;"></div>
+            <div class="licence-photo-frame"></div>
             <div style="position: absolute; top: 170px; left: 414px; font-size: 22px; font-weight: bold;">${licence.prenom} ${licence.nom}</div>
             <div style="position: absolute; top: 215px; left: 414px; font-size: 20px;">${value}</div>
             <div style="position: absolute; top: 258px; left: 414px; font-size: 20px;">EMIS LE : ${licence.dateEmission}</div>
