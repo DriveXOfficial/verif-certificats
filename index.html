@@ -143,7 +143,8 @@
       height: 80px;
       border: 3px solid #013062;
       border-radius: 10px;
-      background: url('https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg') center/cover;
+      background-size: cover;
+      background-position: center;
       float: left;
     }
 
@@ -216,8 +217,9 @@
         dateValidite: "27/06/2026",
         f1: true,
         f2: true,
-        endurance: true,
-        commissaire: true
+        endurance: false,
+        commissaire: false,
+        photoProfil: "https://scontent-cdg4-3.cdninstagram.com/v/t51.29350-15/298059761_919200419473414_5753401807062037902_n.webp?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0uaW1hZ2VfdXJsZ2VuLjE0NDB4MTQ0MC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=scontent-cdg4-3.cdninstagram.com&_nc_cat=110&_nc_oc=Q6cZ2QHRxbs3lLyaoaT10GZlZuWllZKaHAM1fLKd48vYPMlqEOHDv4_fKpcKoP-6Ly859Sc&_nc_ohc=XQsoQgwJjPIQ7kNvwHKbvdR&_nc_gid=yibOFZMdD4aRZL8_9B-4Gw&edm=AP4sbd4BAAAA&ccb=7-5&ig_cache_key=MjkwMDQxMjgyOTA2OTYxNTM1NA%3D%3D.3-ccb7-5&oh=00_AfPIY_-ajjiB4VFQBOdkZ0drFl1IRrhfiahT3bnBCKnwqQ&oe=68646BC6&_nc_sid=7a9f4b"
       }
     };
 
@@ -251,11 +253,12 @@
         const key = code.toUpperCase();
         const l = licences[key];
         if (l) {
+          const photo = l.photoProfil || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg";
           res.innerHTML = `
             <div class="licence-card">
               <div><span class="licence-title">Licence FID</span>
               <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" class="licence-logo"></div>
-              <div class="lic-photo"></div>
+              <div class="lic-photo" style="background-image: url('${photo}')"></div>
               <div class="lic-text">
                 <div>${l.prenom} ${l.nom}</div>
                 <div>${key}</div>
