@@ -20,7 +20,7 @@
       border-radius: 10px;
       text-align: center;
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
@@ -121,28 +121,6 @@
       height: 20px;
       object-fit: contain;
     }
-
-    .fid-card {
-      background-color: #013062;
-      color: white;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .fid-card img {
-      width: 60px;
-      margin-bottom: 10px;
-    }
-
-    .fid-card h3 {
-      margin: 10px 0 5px;
-      font-size: 20px;
-    }
-
-    .fid-card p {
-      margin: 4px 0;
-    }
   </style>
 </head>
 <body>
@@ -150,8 +128,8 @@
     <div class="logo-circle">
       <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/518041438/3de061a3-59b5-4683-b9c9-f12e36e06970.png" alt="Logo DriveX">
     </div>
-    <h1>Vérifiez l’authenticité<br>d’un certificat ou d’une licence FID</h1>
-    <input type="text" placeholder="Entrez une clé ou licence" class="input-field" id="certNumber">
+    <h1>Vérifiez l’authenticité d’un certificat<br>ou d’une licence FID</h1>
+    <input type="text" placeholder="Entrez le code du certificat ou licence" class="input-field" id="certNumber">
     <button class="button" onclick="verifyInput()">Valider</button>
     <div class="error" id="errorMessage"></div>
     <div id="resultBox"></div>
@@ -189,83 +167,80 @@
       }
     };
 
-    const fidLicences = {
-      "ABC-1234-XYZ": {
-        prenom: "Lucien",
-        nom: "Morel",
-        structure: "DriveX Racing",
-        statut: "Actif"
-      },
-      "FID-9876-DRX": {
-        prenom: "Chloé",
-        nom: "Lemoine",
-        structure: "DriveX Academy",
-        statut: "Suspendu"
+    const licencesFID = {
+      "BID-2048-XLM": {
+        nom: "Caliez",
+        prenom: "Quentin",
+        dateEmission: "27/06/2025",
+        dateValidite: "27/06/2026",
+        f1: true,
+        f2: true,
+        endurance: false,
+        commissaire: false
       }
     };
 
     function verifyInput() {
-      const input = document.getElementById('certNumber').value.trim().toUpperCase();
-      const errorMessage = document.getElementById('errorMessage');
-      const resultBox = document.getElementById('resultBox');
+      const value = document.getElementById("certNumber").value.trim();
+      const errorBox = document.getElementById("errorMessage");
+      const resultBox = document.getElementById("resultBox");
+      errorBox.textContent = "";
+      resultBox.innerHTML = "";
 
-      errorMessage.innerText = '';
-      resultBox.innerHTML = '';
-
-      const licenceRegex = /^[A-Z]{3}-\d{4}-[A-Z]{3}$/;
-      const certRegex = /^\d{8}$/;
-
-      if (certRegex.test(input)) {
-        const cert = certificates[input];
-        if (cert) {
-          resultBox.innerHTML = `
-            <div class="result-box">
-              <div class="name">
-                <img src="https://img.icons8.com/ios/452/checkmark.png" alt="Certificat authentique" class="icon">
-                <span>Certificat authentique</span>
-              </div>
-              <h2>${cert.prenom} ${cert.nom}</h2>
-              <p><strong>Structure :</strong> ${cert.structure}</p>
-              <p><strong>Événement :</strong> ${cert.evenement}</p>
-              <p><strong>Résultat :</strong> ${cert.resultat}</p>
+      if (/^\d{8}$/.test(value)) {
+        const cert = certificates[value];
+        if (!cert) {
+          resultBox.innerHTML = `<div class="result-box">
+            <div class="name">
+              <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Certificat non valide" class="icon">
+              <span>Certificat non reconnu</span>
             </div>
-          `;
+            <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
+          </div>`;
         } else {
-          resultBox.innerHTML = `
-            <div class="result-box">
-              <div class="name">
-                <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Certificat non valide" class="icon">
-                <span>Certificat non reconnu</span>
-              </div>
-              <p>Cette clé ne correspond à aucun certificat DriveX officiel enregistré.</p>
+          resultBox.innerHTML = `<div class="result-box">
+            <div class="name">
+              <img src="https://img.icons8.com/ios/452/checkmark.png" alt="Certificat authentique" class="icon">
+              <span>Certificat authentique</span>
             </div>
-          `;
+            <h2>${cert.prenom} ${cert.nom}</h2>
+            <p><strong>Structure :</strong> ${cert.structure}</p>
+            <p><strong>Événement :</strong> ${cert.evenement}</p>
+            <p><strong>Résultat :</strong> ${cert.resultat}</p>
+          </div>`;
         }
-      } else if (licenceRegex.test(input)) {
-        const licence = fidLicences[input];
-        if (licence) {
-          resultBox.innerHTML = `
-            <div class="result-box fid-card">
-              <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID">
-              <h3>${licence.prenom} ${licence.nom}</h3>
-              <p><strong>Structure :</strong> ${licence.structure}</p>
-              <p><strong>Statut :</strong> ${licence.statut}</p>
-              <p><strong>Licence :</strong> ${input}</p>
+      } else if (/^[A-Z]{3}-\d{4}-[A-Z]{3}$/.test(value)) {
+        const licence = licencesFID[value];
+        if (!licence) {
+          resultBox.innerHTML = `<div class="result-box">
+            <div class="name">
+              <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Licence non valide" class="icon">
+              <span>Licence FID non reconnue</span>
             </div>
-          `;
+            <p>Cette licence ne correspond à aucun enregistrement FID.</p>
+          </div>`;
         } else {
-          resultBox.innerHTML = `
-            <div class="result-box">
-              <div class="name">
-                <img src="https://img.icons8.com/ios/452/delete-forever.png" alt="Licence non valide" class="icon">
-                <span>Licence non reconnue</span>
-              </div>
-              <p>Cette licence FID n’est pas enregistrée.</p>
-            </div>
-          `;
+          resultBox.innerHTML = `<div class="result-box" style="position: relative; width: 1000px; height: 600px; background: white; border: 2px solid #013062; border-radius: 20px; color: #013062; font-family: sans-serif;">
+            <h1 style="position: absolute; top: 35px; left: 30px; font-size: 55px; font-weight: bold; text-transform: uppercase;">Licence FID</h1>
+            <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" alt="Logo FID" style="position: absolute; top: 40px; left: 840px; width: 110px; height: 110px; border-radius: 50%;">
+            <div style="position: absolute; top: 145px; left: 100px; width: 210px; height: 260px; border-radius: 15px; border: 2px solid #013062;"></div>
+            <div style="position: absolute; top: 170px; left: 414px; font-size: 22px; font-weight: bold;">${licence.prenom} ${licence.nom}</div>
+            <div style="position: absolute; top: 215px; left: 414px; font-size: 20px;">${value}</div>
+            <div style="position: absolute; top: 258px; left: 414px; font-size: 20px;">EMIS LE : ${licence.dateEmission}</div>
+            <div style="position: absolute; top: 298px; left: 414px; font-size: 20px;">VALIDE JUSQU’AU : ${licence.dateValidite}</div>
+            <div style="position: absolute; top: 400px; left: 100px; font-size: 20px; font-weight: bold; text-transform: uppercase;">CATEGORIES</div>
+            <div style="position: absolute; top: 460px; left: 100px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.f1 ? '✅' : ''}</div>
+            <div style="position: absolute; top: 460px; left: 160px; font-size: 20px;">F1</div>
+            <div style="position: absolute; top: 520px; left: 100px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.f2 ? '✅' : ''}</div>
+            <div style="position: absolute; top: 520px; left: 160px; font-size: 20px;">F2</div>
+            <div style="position: absolute; top: 460px; left: 380px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.endurance ? '✅' : ''}</div>
+            <div style="position: absolute; top: 460px; left: 430px; font-size: 20px;">ENDURANCE</div>
+            <div style="position: absolute; top: 460px; left: 590px; width: 40px; height: 40px; border: 2px solid #013062;">${licence.commissaire ? '✅' : ''}</div>
+            <div style="position: absolute; top: 460px; left: 640px; font-size: 20px;">COMMISSAIRE</div>
+          </div>`;
         }
       } else {
-        errorMessage.innerText = "Format non valide. Entrez un numéro à 8 chiffres ou une licence FID (AAA-1234-BBB).";
+        errorBox.textContent = "Format invalide. Entrez soit un numéro à 8 chiffres, soit une licence AAA-1234-BBB.";
       }
     }
   </script>
