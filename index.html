@@ -116,7 +116,7 @@
     .licence-card {
       position: relative;
       background: white;
-      border: 2px solid #013062;
+      border: 3px solid #013062;
       border-radius: 20px;
       width: 100%;
       max-width: 400px;
@@ -134,23 +134,23 @@
     }
 
     .licence-logo {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       float: right;
       border-radius: 50%;
     }
 
     .lic-photo {
-      width: 90px;
-      height: 110px;
-      border: 1px solid #013062;
-      border-radius: 8px;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/800px-User_icon_2.svg.png') center/cover;
+      width: 70px;
+      height: 80px;
+      border: 3px solid #013062;
+      border-radius: 10px;
+      background: url('https://i.ibb.co/sqF1p6p/photo-profil.jpg') center/cover;
       float: left;
     }
 
     .lic-text {
-      margin-left: 110px;
+      margin-left: 90px;
       padding-top: 5px;
     }
 
@@ -161,26 +161,29 @@
     }
 
     .lic-categories {
-      margin-top: 10px;
+      margin-top: 15px;
       clear: both;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .lic-cat {
-      display: inline-block;
-      margin-right: 15px;
+      display: flex;
+      align-items: center;
+      background: #f2f7ff;
+      border: 2px solid #013062;
+      border-radius: 10px;
+      padding: 4px 8px;
       font-size: 12px;
       color: #013062;
     }
 
-    .lic-cat span {
-      border: 1px solid #013062;
-      width: 16px;
-      height: 16px;
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      margin-right: 4px;
-      font-size: 10px;
+    .lic-cat svg {
+      width: 14px;
+      height: 14px;
+      fill: #013062;
+      margin-right: 5px;
     }
   </style>
 </head>
@@ -220,6 +223,11 @@
       }
     };
 
+    const checkIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M20.285 6.709a1 1 0 0 0-1.414-1.418l-9.193 9.192-4.242-4.242a1 1 0 1 0-1.414 1.414l5 5a1 1 0 0 0 1.414 0l10-10z"/>
+      </svg>`;
+
     function verifier() {
       const code = document.getElementById("inputCode").value.trim();
       const error = document.getElementById("error");
@@ -257,10 +265,10 @@
                 <div>VALIDE JUSQU’À : ${l.dateValidite}</div>
               </div>
               <div class="lic-categories">
-                <div class="lic-cat"><span>${l.f1 ? "✅" : ""}</span>F1</div>
-                <div class="lic-cat"><span>${l.f2 ? "✅" : ""}</span>F2</div>
-                <div class="lic-cat"><span>${l.endurance ? "✅" : ""}</span>ENDURANCE</div>
-                <div class="lic-cat"><span>${l.commissaire ? "✅" : ""}</span>COMMISSAIRE</div>
+                <div class="lic-cat">${l.f1 ? checkIcon : ""}F1</div>
+                <div class="lic-cat">${l.f2 ? checkIcon : ""}F2</div>
+                <div class="lic-cat">${l.endurance ? checkIcon : ""}ENDURANCE</div>
+                <div class="lic-cat">${l.commissaire ? checkIcon : ""}COMMISSAIRE</div>
               </div>
             </div>`;
         } else {
