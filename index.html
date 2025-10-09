@@ -22,6 +22,8 @@
       width: 100%;
       max-width: 500px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
     }
 
     .logo-circle {
@@ -121,6 +123,13 @@
       margin: 0 auto;
       padding: 15px;
       box-sizing: border-box;
+      aspect-ratio: 85.6 / 54;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .licence-card:hover {
+      transform: scale(1.02);
     }
 
     .licence-title {
@@ -162,27 +171,88 @@
     .lic-categories {
       margin-top: 15px;
       clear: both;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
 
     .lic-cat {
       display: flex;
       align-items: center;
+      justify-content: center;
       background: #f2f7ff;
       border: 2px solid #013062;
       border-radius: 10px;
-      padding: 4px 8px;
-      font-size: 12px;
+      padding: 6px;
+      font-size: 13px;
       color: #013062;
+      font-weight: bold;
+      text-transform: uppercase;
     }
 
-    .lic-cat svg {
-      width: 14px;
-      height: 14px;
-      fill: #013062;
-      margin-right: 5px;
+    /* Couleurs par niveau */
+    .bronze {
+      background: linear-gradient(145deg, #cd7f32, #b87333);
+      color: white;
+      border-color: #8b4513;
+    }
+
+    .argent {
+      background: linear-gradient(145deg, #c0c0c0, #a9a9a9);
+      color: #013062;
+      border-color: #7f7f7f;
+    }
+
+    .or {
+      background: linear-gradient(145deg, #ffd700, #ffbf00);
+      color: #013062;
+      border-color: #b8860b;
+    }
+
+    .diamant {
+      background: linear-gradient(145deg, #b9f2ff, #aee8ff);
+      color: #013062;
+      border-color: #5ec3e0;
+    }
+
+    .commissaire {
+      grid-column: span 2;
+    }
+
+    /* Pop-up */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    .popup {
+      transform: scale(1.6); /* agrandissement visible */
+      transition: transform 0.3s ease;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -196,6 +266,14 @@
     <button class="button" onclick="verifier()">Valider</button>
     <div id="error" class="error"></div>
     <div id="result" class="result-box"></div>
+  </div>
+
+  <!-- Pop-up -->
+  <div class="overlay" id="overlay">
+    <button class="close-btn" onclick="fermerPopup()">×</button>
+    <div class="popup" id="popup">
+      <div id="popup-content"></div>
+    </div>
   </div>
 
   <script>
@@ -215,18 +293,14 @@
         prenom: "Quentin",
         dateEmission: "27/06/2025",
         dateValidite: "27/06/2026",
-        f1: true,
-        f2: true,
-        endurance: true,
-        commissaire: false,
+        f1: "non",
+        hy: "non",
+        lmp2: "non",
+        gt3: "non",
+        commissaire: true,
         photoProfil: "https://i.imgur.com/LLKe0tg.jpeg"
       }
     };
-
-    const checkIcon = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M20.285 6.709a1 1 0 0 0-1.414-1.418l-9.193 9.192-4.242-4.242a1 1 0 1 0-1.414 1.414l5 5a1 1 0 0 0 1.414 0l10-10z"/>
-      </svg>`;
 
     function verifier() {
       const code = document.getElementById("inputCode").value.trim();
@@ -242,9 +316,9 @@
             <div class="cert-box">
               <h2>Certificat vérifié ✅</h2>
               <p class="name">${c.prenom} ${c.nom}</p>
-              <p>Événement : <strong>${c.evenement}</strong></p>
-              <p>Résultat : <strong>${c.resultat}</strong></p>
-              <p>Structure : <strong>${c.structure}</strong></p>
+              <p>Événement : <strong>${c.evenement}</strong></p>
+              <p>Résultat : <strong>${c.resultat}</strong></p>
+              <p>Structure : <strong>${c.structure}</strong></p>
             </div>`;
         } else {
           error.textContent = "Certificat non trouvé.";
@@ -254,30 +328,41 @@
         const l = licences[key];
         if (l) {
           const photo = l.photoProfil || "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1114445501.jpg";
-          res.innerHTML = `
-            <div class="licence-card">
+          const content = `
+            <div class="licence-card" onclick="agrandirLicence(this)">
               <div><span class="licence-title">Licence FID</span>
               <img src="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,trim=0;0;0;0,width=480,height=480/image/519027274/f5b8c698-7555-4d60-914b-c8ddd3832516.png" class="licence-logo"></div>
               <div class="lic-photo" style="background-image: url('${photo}')"></div>
               <div class="lic-text">
                 <div>${l.prenom} ${l.nom}</div>
                 <div>${key}</div>
-                <div>ÉMIS LE : ${l.dateEmission}</div>
-                <div>VALIDE JUSQU’À : ${l.dateValidite}</div>
+                <div>ÉMIS LE : ${l.dateEmission}</div>
+                <div>VALIDE JUSQU’À : ${l.dateValidite}</div>
               </div>
               <div class="lic-categories">
-                <div class="lic-cat">${l.f1 ? checkIcon : ""}F1</div>
-                <div class="lic-cat">${l.f2 ? checkIcon : ""}F2</div>
-                <div class="lic-cat">${l.endurance ? checkIcon : ""}ENDURANCE</div>
-                <div class="lic-cat">${l.commissaire ? checkIcon : ""}COMMISSAIRE</div>
+                <div class="lic-cat ${l.f1}">F1</div>
+                <div class="lic-cat ${l.hy}">HY</div>
+                <div class="lic-cat ${l.lmp2}">LMP2</div>
+                <div class="lic-cat ${l.gt3}">GT3</div>
+                <div class="lic-cat commissaire">${l.commissaire ? "COMMISSAIRE VALIDÉ" : "NON VALIDÉ"}</div>
               </div>
             </div>`;
+          res.innerHTML = content;
         } else {
           error.textContent = "Licence FID non trouvée.";
         }
       } else {
         error.textContent = "Format invalide.";
       }
+    }
+
+    function agrandirLicence(el) {
+      document.getElementById("popup-content").innerHTML = el.outerHTML;
+      document.getElementById("overlay").classList.add("active");
+    }
+
+    function fermerPopup() {
+      document.getElementById("overlay").classList.remove("active");
     }
 
     document.getElementById("inputCode").addEventListener("keypress", e => {
